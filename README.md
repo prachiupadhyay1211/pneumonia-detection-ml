@@ -1,195 +1,235 @@
-# MediScan AI – Pneumonia X-Ray Analyzer
+# MediScan AI – Pneumonia Detection from Chest X-Rays
 
-MediScan AI is a web app that uses a deep-learning model to analyze chest X-ray images and predict:
+**MediScan AI** is a deep-learning powered web application that analyzes chest X-ray images and predicts whether the lungs show signs of **Pneumonia** or are **Normal (Healthy)**.
 
-- **BACTERIAL pneumonia**
-- **VIRAL pneumonia**
-- **NORMAL (healthy lungs)**
+The system uses a trained convolutional neural network based on MobileNet to perform image classification and provides a clean, interactive interface for users to upload X-rays and view predictions.
 
-It’s built as a clean, educational mini-platform with:
-- An **information-rich landing page** (risk, prevention, charts, timelines, FAQ, map)
-- An **AI detector page** where users can upload an X-ray and see the predicted class + confidence
-- Clear, focused **next-step tips** for each result
-
+The project is designed as an educational medical-AI platform demonstrating how deep learning can assist in preliminary radiology screening.
 
 ---
 
-## ✨ Features
+# Features
 
-- 📸 **Chest X-ray upload** (click or drag & drop)
-- 🤖 **Deep-learning inference** using a trained MobileNet model (`pneumonia_mobilenet_best.h5`)
-- 🧪 **3-class prediction**: `BACTERIAL`, `VIRAL`, `NORMAL`
-- 📊 **Analytics landing page**:
-  - Global health statistics & animated counters
-  - Pneumonia health charts (age risk, trends)
-  - Recovery & treatment timeline
-  - FAQ section
-- 💡 **Actionable tips** per result:
-  - Separate guidance for **bacterial**, **viral**, **healthy**, and **inconclusive** cases
-- 🌐 **Modern UI**:
-  - Animated hero section
-  - Particle background
-  - Smooth layout transitions
-  - Responsive design for desktop & mobile
+• Chest X-ray image upload (click or drag & drop)
+• AI-based pneumonia detection using a trained deep learning model
+• Binary classification: **PNEUMONIA** or **NORMAL**
+• Displays prediction confidence score
+• Informational landing page about pneumonia
+• Health charts and educational sections
+• Recovery timeline and FAQ module
+• Responsive modern UI
 
 ---
 
-## 🧱 Tech Stack
+# Tech Stack
 
-- **Backend:** Python, Flask
-- **Deep Learning:** TensorFlow / Keras (MobileNet-based classifier)
-- **Frontend:** HTML5, CSS3, vanilla JavaScript
-- **Templates:** Jinja2 (`templates/` folder)
-- **Charts & visuals:** Chart.js (in separate template modules)
-- **Environment:** Git, virtualenv (recommended)
+Backend
+Python
+Flask
+
+Deep Learning
+TensorFlow
+Keras
+MobileNetV2 (Transfer Learning)
+
+Frontend
+HTML5
+CSS3
+JavaScript
+Jinja2 Templates
+
+Environment
+Git
+Virtual Environment (venv)
 
 ---
-```
-## 📁 Project Structure
 
-.
-├── app.py                    # Flask app + routes + prediction logic
-├── requirements.txt          # Python dependencies
-├── .gitignore                # Ignored files (uploads, model, caches, etc.)
-├── templates/
-│   ├── first.html            # Landing / info page
-│   ├── index.html            # Detector page (upload + results UI)
-│   ├── charts.html           # Analytics charts section
-│   ├── timeline.html         # Recovery & treatment timeline
-│   └── faq.html              # FAQs about pneumonia & AI
-└── static/
-    └── uploads/              # Uploaded X-ray images (not committed to Git)
+# Project Structure
 
 ```
-🚀 Getting Started (Run Locally)
+pneumonia-detection-ml
+│
+├── app.py
+├── train_model.py
+├── pneumonia_mobilenet_best.h5
+├── requirements.txt
+├── README.md
+│
+├── dataset
+│   ├── train
+│   │   ├── NORMAL
+│   │   └── PNEUMONIA
+│   ├── test
+│   │   ├── NORMAL
+│   │   └── PNEUMONIA
+│
+├── templates
+│   ├── first.html
+│   ├── index.html
+│   ├── charts.html
+│   ├── timeline.html
+│   └── faq.html
+│
+└── static
+    └── uploads
+```
 
-1️⃣ Clone the repository
+---
+
+# Running the Project Locally
+
+## 1 Clone the repository
+
+```
 git clone https://github.com/prachiupadhyay1211/pneumonia-detection-ml.git
-
 cd pneumonia-detection-ml
+```
 
-2️⃣ (Recommended) Create a virtual environment
-python -m venv env
+---
 
-env\Scripts\activate      # Windows
-source env/bin/activate   # Mac / Linux
+## 2 Create a virtual environment
 
-3️⃣ Install dependencies
+```
+python3 -m venv env
+```
+
+Activate environment
+
+Mac / Linux
+
+```
+source env/bin/activate
+```
+
+Windows
+
+```
+env\Scripts\activate
+```
+
+---
+
+## 3 Install dependencies
+
+```
 pip install -r requirements.txt
+```
 
-4️⃣ Add the model file
+---
 
-Download / copy your trained model file to the project root:
+## 4 Ensure model file exists
+
+Place the trained model in the project root:
+
+```
 pneumonia_mobilenet_best.h5
+```
 
-Make sure the filename matches what app.py expects:
-model = load_model('pneumonia_mobilenet_best.h5')
+The application loads it using:
 
-5️⃣ Run the Flask app: "python app.py"
+```
+model = load_model("pneumonia_mobilenet_best.h5")
+```
 
-By default it runs at:
-http://127.0.0.1:5000/
+---
 
-🧭 App Flow
-/ → Landing / Info Page (first.html)
+## 5 Run the Flask application
 
-Pneumonia overview, risk groups, symptoms, prevention
-Animated stats and health insights
-Embedded sections for:
-Charts (/charts)
-Recovery timeline (/timeline)
-FAQ (/faq)
-CTA button: “Launch AI Detector” → /detect
+```
+python3 app.py
+```
 
-/detect → AI Detector Page (index.html)
-Upload area for chest X-ray (click or drag & drop)
-On upload:
-Image is saved under static/uploads/
-Model runs prediction via predict_logic(...)
-Confidence score is calculated
+Open browser:
 
-Result view:
+```
+http://127.0.0.1:5000
+```
 
-Shows predicted class (BACTERIAL / VIRAL / NORMAL / UNCERTAIN)
-Shows X-ray preview
-Displays tips tailored to the result:
-Bacterial → antibiotics, monitoring, urgent care triggers (5 tips)
-Viral → rest, fluids, isolation, symptom relief, no antibiotics (5 tips)
-Normal → hygiene, no smoking, exercise (3 tips)
-Uncertain → re-scan, better image, clinical review (3 tips)
-Button: “Analyze New Scan” resets the page and allows another upload.
+---
 
-🧮 Model Details (High-Level)
+# Application Flow
 
-Backbone: MobileNet-based CNN
-Input: Chest X-ray images resized to 224 × 224
-Preprocessing:
-image.load_img(..., target_size=(224, 224))
-x / 255.0 rescaling
+Landing Page
+Provides information about pneumonia, symptoms, prevention, and educational resources.
 
-Output: Softmax probabilities over 3 classes:
-BACTERIAL
+AI Detection Page
+Users upload a chest X-ray image.
+
+Prediction Pipeline
+
+1. Image uploaded
+2. Image resized to 224×224
+3. Normalization applied
+4. Deep learning model performs prediction
+5. Result displayed with confidence score
+
+Possible outputs:
+
+PNEUMONIA
 NORMAL
-VIRAL
-
-## 📂 Datasets Used
-
-This project utilizes a custom hybrid dataset created by combining two major open-source repositories to ensure robust detection across different age groups (Pediatric & Adult) and pneumonia types.
 
 ---
 
-### Chest X-Ray Images (Pneumonia) – Paul Timothy Mooney  
-**Focus:** Pediatric patients (1–5 years old)
+# Model Details
 
-🔗 **Dataset URL:**  
-👉 https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia
+Model Architecture
+MobileNetV2 based Convolutional Neural Network
 
----
+Input
+Chest X-ray images resized to 224 × 224
 
-### COVID-19 Radiography Database – Tawsifur Rahman  
-**Focus:** Adult patients & Viral Pneumonia cases
+Preprocessing
 
-🔗 **Dataset URL:**  
-👉 https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database
+```
+x = img / 255.0
+```
 
----
+Output Layer
 
-### ✅ Why we combined them:
-
-- Mooney dataset provides reliable **Bacterial pneumonia data** but lacks adult cases.
-- Rahman dataset contains strong **Adult Normal & Viral pneumonia samples**.
-
-🎯 **Result:**
-A balanced **multi-class dataset**:
-
-**Normal – Bacterial – Viral**
-
-Covering both pediatric and adult chest X-ray images.
-
+Binary classification using sigmoid activation.
 
 ---
 
-## 📸 Screenshots
+# Dataset
 
-### Landing Page
-![Landing Page](https://raw.githubusercontent.com/Ranjeet0045/Pneumonia_Detection_ML/master/screenshots/landing.png)
+This project uses the **Chest X-Ray Pneumonia Dataset**.
 
----
+Dataset Link
 
-### Upload X-Ray
-![Upload Screen](https://raw.githubusercontent.com/Ranjeet0045/Pneumonia_Detection_ML/master/screenshots/upload.png)
+https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia
 
----
+Classes used:
 
-### Bacterial Detection Result
-![Bacterial Result](https://raw.githubusercontent.com/Ranjeet0045/Pneumonia_Detection_ML/master/screenshots/bacterial.png)
+NORMAL
+PNEUMONIA
 
 ---
 
-### Viral Detection Result
-![Viral Result](https://raw.githubusercontent.com/Ranjeet0045/Pneumonia_Detection_ML/master/screenshots/viral.png)
+# Screenshots
+
+Landing Page
+AI Detector Upload Page
+Prediction Result Page
+
+(Add screenshots inside the screenshots/ folder)
 
 ---
 
-### Normal Detection Result
-![Normal Result](https://raw.githubusercontent.com/Ranjeet0045/Pneumonia_Detection_ML/master/screenshots/normal.png)
+# Future Improvements
+
+• Grad-CAM lung infection heatmap visualization
+• Model performance dashboard
+• Improved dataset balancing
+• Deployment using Docker or cloud hosting
+
+---
+
+# Author
+
+Prachi Upadhyay
+
+GitHub
+https://github.com/prachiupadhyay1211
+
+LinkedIn
+https://www.linkedin.com/in/prachi-upadhyay-926487301/
